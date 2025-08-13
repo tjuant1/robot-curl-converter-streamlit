@@ -21,4 +21,37 @@ curl_input = st.text_area(
     """
     , key="curl_input")
 
-output = st.info('This is a purely informational message', icon="ℹ️", key='output')
+"""Select the body prefix"""
+body_options = ['--Select One Option--', '--data', '--data-raw', '--form', '--data-urlencode']
+body_selected = st.selectbox(
+    label="Select the body prefix",
+    label_visibility="collapsed",
+    index=0,
+    options=body_options
+)
+
+file_options = ['--Select One Option--', 'Yes', 'No']
+if body_selected == '--form':
+    file_option = st.selectbox(
+    label="Your Request Has A File?",
+    index=0,
+    options=file_options
+    )
+
+"""Select the body prefix:"""
+headers_options = ['--Select One Option--', '--header']
+body_selected = st.selectbox(
+    label="Select the body prefix",
+    label_visibility='collapsed',
+    index=0,
+    options=headers_options
+)
+
+output = "a"
+st.info(f"""
+        This is a purely informational message.\n
+        {output}
+        """, icon="ℹ️")
+
+#print(curl_input)
+st.session_state

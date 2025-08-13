@@ -1,5 +1,12 @@
 import streamlit as st
 
+# Configuração da página (wide mode, título, ícone)
+st.set_page_config(
+    page_title="How to Use",
+    page_icon="📚",
+    layout="wide"
+)
+
 st.title("⚙️ Learn How To Use This Tool")
 
 st.info(

@@ -1,5 +1,11 @@
 import streamlit as st
 
+# Configuração da página (wide mode, título, ícone)
+st.set_page_config(
+    page_title="Home",
+    layout="wide"
+)
+
 st.title("🔗 Conversor cURL → Robot Framework Test")
 
 st.markdown("""
