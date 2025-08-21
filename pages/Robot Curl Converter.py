@@ -1,7 +1,7 @@
 import streamlit as st
 from structure import GetContent
 
-"""Variables"""
+#Variables
 main_text_options = '--Select One Option--'
 
 # Configuração da página (wide mode, título, ícone)
@@ -13,7 +13,7 @@ st.set_page_config(
 
 st.title("🔗 cURL → Robot Framework Converter")
 
-"""User Curl Input"""
+#User Curl Input
 curl_input = st.text_area(
     "cURL Command:",
     height=240,
@@ -26,7 +26,7 @@ curl_input = st.text_area(
     """
     , key="curl_input")
 
-"""Select the body prefix"""
+"""Select the body prefix:"""
 body_options = [main_text_options, '--data', '--data-raw', '--form', '--data-urlencode']
 body_selected = st.selectbox(
     label="Select the body prefix",
@@ -35,7 +35,7 @@ body_selected = st.selectbox(
     options=body_options
 )
 
-"""Appears when --form is selected, define if the form has file"""
+#Appears when --form is selected, define if the form has file
 file_options = [main_text_options, 'Yes', 'No']
 if body_selected == '--form':
     file_option = st.selectbox(
@@ -44,7 +44,7 @@ if body_selected == '--form':
     options=file_options
     )
 
-"""Select the headers prefix"""
+"""Select the headers prefix:"""
 headers_options = [main_text_options, '--header']
 header_selected = st.selectbox(
     label="Select the body prefix",
@@ -56,10 +56,12 @@ header_selected = st.selectbox(
 if curl_input:
     structure = GetContent()
     headers = structure.get_headers(curl_input, header_selected)
+    body = 
     url = structure.get_url(curl_input)
-    print(url)
+    req_formdata = structure.content_formdata(curl_input, body_selected, file_option, header_selected, url)
+    
 
-"""Automation code retuned to the user"""
+
 output = "a"
 st.info(f"""
         This is a purely informational message.\n
