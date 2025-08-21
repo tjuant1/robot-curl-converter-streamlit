@@ -17,10 +17,10 @@ class GetContent:
             header_tuple = headers[indice]
             robot_format = f"{header_tuple[0]}={header_tuple[1]}"
             indice += 1
-            values_list.append(f"    ...    {robot_format}")
+            values_list.append(f"    ...    {robot_format}\n")
         return values_list
 
-    def content_formdata(self, curl_input, body_prefix, has_file, headers, url):
+    def content_formdata(self, curl_input, body_prefix, has_file, header, url):
         indice = 0
 
         body = re.findall(fr"{body_prefix}\s+'([^']+)'", curl_input)
@@ -34,27 +34,30 @@ class GetContent:
         code = [
         'Keyword Name\n',
         f'    Create Session    session    {url}\n',
-        f'    ${headers}=    Create Dictionary\n'
+        '\n    ${headers}=    Create Dictionary\n'
         ]
         indice = 0
-        while indice < len(headers):
-            header_value = headers[indice]
+        while indice < len(header):
+            header_value = header[indice]
             code.append(header_value)
             indice += 1
 
-        code.append("    ${form_data}=    Create Dictionary\n    ")
+        code.append("\n    ${form_data}=    Create Dictionary\n    ")
         indice = 0
         while indice < body_len:
             body_new = body[indice]
-            f.write(f"...    {body_new}\n    ")
+            code.append(f"...    {body_new}\n    ")
             indice += 1
         
-        # with open(robot_path, 'a') as f:
-        #     if has_file == "n":
-        #         f.write("\n    ${response}=    REQUEST On Session    session    /\n    ...    data=${form_data}\n    ...    headers=${headers}")
-        #         return None
-        #     f.write(f"\n    ${{files}}=    Create Dictionary\n    ...    {filtered_item[0]}\n")
-        #     f.write("\n    ${response}=    REQUEST On Session    session    /\n    ...    files=${files}\n    ...    data=${form_data}")
+
+        if has_file == "No":
+            code.append("\n    ${response}=    REQUEST On Session    session    /\n    ...    data=${form_data}\n    ...    headers=${headers}")
+        else:
+            code.append(f"\n    ${{files}}=    Create Dictionary\n    ...    {image_path[0]}\n")
+            code.append("\n    ${response}=    REQUEST On Session    session    /\n    ...    files=${files}\n    ...    data=${form_data}\n    ...    headers=${headers}")
+
+        code_retunable = "".join(code)
+        return code_retunable
 
     def content_json(self, headers, robot_path, curl_path, body_prefix):
         indice = 0

@@ -36,12 +36,13 @@ body_selected = st.selectbox(
 )
 
 #Appears when --form is selected, define if the form has file
-file_options = [main_text_options, 'Yes', 'No']
+file_option_list = [main_text_options, 'Yes', 'No']
+file_option  = ''
 if body_selected == '--form':
     file_option = st.selectbox(
     label="Your Request Has A File?",
     index=0,
-    options=file_options
+    options=file_option_list
     )
 
 """Select the headers prefix:"""
@@ -56,14 +57,7 @@ header_selected = st.selectbox(
 if curl_input:
     structure = GetContent()
     headers = structure.get_headers(curl_input, header_selected)
-    body = 
     url = structure.get_url(curl_input)
-    req_formdata = structure.content_formdata(curl_input, body_selected, file_option, header_selected, url)
+    code = structure.content_formdata(curl_input, body_selected, file_option, headers, url)
     
-
-
-output = "a"
-st.info(f"""
-        This is a purely informational message.\n
-        {output}
-        """, icon="ℹ️")
+    st.code(f"This is your Robot Framework code converted from your cURL:\n\n{code}", language="robot")
