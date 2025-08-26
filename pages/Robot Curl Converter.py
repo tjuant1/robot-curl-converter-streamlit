@@ -2,7 +2,8 @@ import streamlit as st
 from structure import GetContent
 
 #Variables
-main_text_options = '--Select One Option--'
+main_text_options = ''
+json_prefixes = ['--data', '--data-raw']
 
 # Configuração da página (wide mode, título, ícone)
 st.set_page_config(
@@ -37,7 +38,6 @@ body_selected = st.selectbox(
 
 #Appears when --form is selected, define if the form has file
 file_option_list = [main_text_options, 'Yes', 'No']
-file_option  = ''
 if body_selected == '--form':
     file_option = st.selectbox(
     label="Your Request Has A File?",
@@ -54,10 +54,17 @@ header_selected = st.selectbox(
     options=headers_options
 )
 
-if curl_input:
+if header_selected != '':
     structure = GetContent()
     headers = structure.get_headers(curl_input, header_selected)
     url = structure.get_url(curl_input)
-    code = structure.content_formdata(curl_input, body_selected, file_option, headers, url)
+
+    if body_selected == '--form':
+        code = structure.content_formdata(curl_input, body_selected, file_option, headers, url)
+    elif body_selected == '--data-urlencode':
+        code = structure.content_urlencoded(curl_input, body_selected, headers, url)
+    else:
+        code = structure.content_formdata(curl_input, body_selected, file_option, headers, url)
     
-    st.code(f"This is your Robot Framework code converted from your cURL:\n\n{code}", language="robot")
+    st.info("This is your Robot Framework code converted from your cURL:")
+    st.code(code, language="robot")

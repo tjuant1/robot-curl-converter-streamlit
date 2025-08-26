@@ -36,6 +36,7 @@ class GetContent:
         f'    Create Session    session    {url}\n',
         '\n    ${headers}=    Create Dictionary\n'
         ]
+
         indice = 0
         while indice < len(header):
             header_value = header[indice]
@@ -48,7 +49,6 @@ class GetContent:
             body_new = body[indice]
             code.append(f"...    {body_new}\n    ")
             indice += 1
-        
 
         if has_file == "No":
             code.append("\n    ${response}=    REQUEST On Session    session    /\n    ...    data=${form_data}\n    ...    headers=${headers}")
@@ -80,32 +80,33 @@ class GetContent:
             f.write(f"\n    ${{body}}=    Set Variable    {body}\n")
             f.write("\n    ${response}=    REQUEST On Session    session    /\n    ...    headers=${headers}\n    ...    data=${body}")
 
-    def content_urlencoded(self, headers, robot_path, curl_path, body_prefix):
-        indice = 0
-        url = self.get_url(curl_path)
+    def content_urlencoded(self, curl_input, body_prefix, header, url):
+        body_w_prefix = re.findall(fr"{body_prefix}\s+'([^']+)'", curl_input)
+        body_len = len(body_w_prefix)
 
-        with open(curl_path, encoding='utf-8') as f:
-            curl = f.read()
-            body_w_prefix = re.findall(fr"{body_prefix}\s+'([^']+)'", curl)
-            body_len = len(body_w_prefix)
-
-        with open(robot_path, 'a') as f:
-            f.write(self.write_keyword_name)
-            f.write(f"Create Session    session    {url}\n\n")
-            f.write("    &{data}=    Create Dictionary\n    ")
-            while indice < body_len:
-                body = body_w_prefix[indice]
-                f.write(f"...    {body}\n    ")
-                indice += 1
+        code = [
+        'Keyword Name\n',
+        f'    Create Session    session    {url}\n',
+        '    ${headers}=    Create Dictionary\n'
+        ]
 
         indice = 0
-        with open(robot_path, 'a') as f:
-            f.write("\n    ${headers}=    Create Dictionary\n    ")
-            while indice < len(headers):
-                header_value = headers[indice]
-                f.write(header_value)
-                indice += 1
-            f.write("\n    ${response}=    REQUEST On Session    session    /\n    ...    headers=${headers}\n    ...    data=${data}")
+        while indice < len(header):
+            header_value = header[indice]
+            code.append(header_value)
+            indice += 1
+
+        code.append('\n    &{data}=    Create Dictionary\n    ')
+        indice = 0
+        while indice < body_len:
+            body = body_w_prefix[indice]
+            code.append(f"...    {body}\n    ")
+            indice += 1
+
+        code.append("\n    ${response}=    REQUEST On Session    session    /\n    ...    headers=${headers}\n    ...    data=${data}")
+
+        code_retunable = "".join(code)
+        return code_retunable
 
     def no_body_requisition(self, headers, robot_path, curl_path):
         indice = 0
