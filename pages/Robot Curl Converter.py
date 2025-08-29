@@ -27,23 +27,33 @@ curl_input = st.text_area(
     """
     , key="curl_input")
 
-"""Select the body prefix:"""
-body_options = [main_text_options, '--data', '--data-raw', '--form', '--data-urlencode']
-body_selected = st.selectbox(
-    label="Select the body prefix",
-    label_visibility="collapsed",
-    index=0,
-    options=body_options
+#User will define if the requisition has body
+file_option_list = [main_text_options, 'Yes', 'No']
+has_body = st.selectbox(
+label="Your Request Has Body?",
+index=0,
+options=file_option_list
 )
 
-#Appears when --form is selected, define if the form has file
-file_option_list = [main_text_options, 'Yes', 'No']
-if body_selected == '--form':
-    file_option = st.selectbox(
-    label="Your Request Has A File?",
-    index=0,
-    options=file_option_list
+body_selected = ''
+if has_body == 'Yes':
+    """Select the body prefix:"""
+    body_options = [main_text_options, '--data', '--data-raw', '--form', '--data-urlencode']
+    body_selected = st.selectbox(
+        label="Select the body prefix",
+        label_visibility="collapsed",
+        index=0,
+        options=body_options
     )
+
+    #Appears when --form is selected, define if the form has file
+    file_option_list = [main_text_options, 'Yes', 'No']
+    if body_selected == '--form':
+        file_option = st.selectbox(
+        label="Your Request Has A File?",
+        index=0,
+        options=file_option_list
+        )
 
 """Select the headers prefix:"""
 headers_options = [main_text_options, '--header']
@@ -63,8 +73,10 @@ if header_selected != '':
         code = structure.content_formdata(curl_input, body_selected, file_option, headers, url)
     elif body_selected == '--data-urlencode':
         code = structure.content_urlencoded(curl_input, body_selected, headers, url)
+    elif body_selected in json_prefixes:
+        code = structure.content_json(curl_input, body_selected, headers, url)
     else:
-        code = structure.content_formdata(curl_input, body_selected, file_option, headers, url)
+        code = structure.no_body_requisition(headers, url)
     
     st.info("This is your Robot Framework code converted from your cURL:")
     st.code(code, language="robot")
