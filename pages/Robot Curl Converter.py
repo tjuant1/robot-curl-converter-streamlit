@@ -8,7 +8,7 @@ json_prefixes = ['--data', '--data-raw']
 # Configuração da página (wide mode, título, ícone)
 st.set_page_config(
     page_title="cURL to Robot Framework Converter",
-    page_icon="🤖",
+    page_icon="🔄",
     layout="wide"
 )
 
