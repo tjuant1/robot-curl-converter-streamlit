@@ -22,7 +22,7 @@ st.code(
     --header 'Content-Type: application/json'
     --header 'Authorization: Bearer {{Token}}'
     --data-raw '{
-    "email": "sysadmin@qacoders.com",
-    "password": "1234@Test"
+    "email": "",
+    "password": ""
     }'
     """)
