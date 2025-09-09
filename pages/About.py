@@ -18,7 +18,7 @@ st.markdown("### cURL example:")
 
 st.code(
     """
-    curl --location 'https://nest-erp.qacoders-academy.com.br//api/auth/login'
+    curl --location 'URL HERE'
     --header 'Content-Type: application/json'
     --header 'Authorization: Bearer {{Token}}'
     --data-raw '{
