@@ -1,9 +1,12 @@
 import streamlit as st
+import time
 from structure import GetContent
 
 #Variables
 main_text_options = ''
+body_selected = ''
 json_prefixes = ['--data', '--data-raw']
+file_option_list = [main_text_options, 'Yes', 'No']
 
 # Configuração da página (wide mode, título, ícone)
 st.set_page_config(
@@ -28,14 +31,12 @@ curl_input = st.text_area(
     , key="curl_input")
 
 #User will define if the requisition has body
-file_option_list = [main_text_options, 'Yes', 'No']
 has_body = st.selectbox(
 label="Your Request Has Body?",
 index=0,
 options=file_option_list
 )
 
-body_selected = ''
 if has_body == 'Yes':
     """Select the body prefix:"""
     body_options = [main_text_options, '--data', '--data-raw', '--form', '--data-urlencode']
@@ -67,16 +68,22 @@ header_selected = st.selectbox(
 if header_selected != '':
     structure = GetContent()
     headers = structure.get_headers(curl_input, header_selected)
-    url = structure.get_url(curl_input)
 
-    if body_selected == '--form':
-        code = structure.content_formdata(curl_input, body_selected, file_option, headers, url)
-    elif body_selected == '--data-urlencode':
-        code = structure.content_urlencoded(curl_input, body_selected, headers, url)
-    elif body_selected in json_prefixes:
-        code = structure.content_json(curl_input, body_selected, headers, url)
-    else:
-        code = structure.no_body_requisition(headers, url)
-    
-    st.info("This is your Robot Framework code converted from your cURL:")
-    st.code(code, language="robot")
+    if headers and st.button("Converter", type="primary", key="convert"):
+            with st.spinner("Convertendo seu cURL..."):
+                time.sleep(0.5)
+
+                url = structure.get_url(curl_input)
+                if body_selected == '--form':
+                    code = structure.content_formdata(curl_input, body_selected, file_option, headers, url)
+                elif body_selected == '--data-urlencode':
+                    code = structure.content_urlencoded(curl_input, body_selected, headers, url)
+                elif body_selected in json_prefixes:
+                    code = structure.content_json(curl_input, body_selected, headers, url)
+                else:
+                    code = structure.no_body_requisition(headers, url)
+                
+                st.toast("cURL convert success!", icon="✅")
+                st.code(code, language="robotframework", line_numbers=True)
+    elif not headers:
+        st.toast("Invalid cURL", icon="⚠️")
