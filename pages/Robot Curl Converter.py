@@ -14,7 +14,6 @@ st.set_page_config(
     page_icon="🔄",
     layout="wide"
 )
-
 st.title("🔗 cURL → Robot Framework Converter")
 
 #User Curl Input
@@ -82,8 +81,9 @@ if header_selected != '':
                     code = structure.content_json(curl_input, body_selected, headers, url)
                 else:
                     code = structure.no_body_requisition(headers, url)
-                
+            
                 st.toast("cURL convert success!", icon="✅")
                 st.code(code, language="robotframework", line_numbers=True)
+
     elif not headers:
         st.toast("Invalid cURL", icon="⚠️")
