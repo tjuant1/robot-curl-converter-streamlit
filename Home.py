@@ -6,10 +6,10 @@ st.set_page_config(
     layout="wide"
 )
 
-st.title("🔗 Conversor cURL → Robot Framework Test")
+st.title("🔗 cURL → Robot Framework Converter")
 
 st.markdown("""
-Bem-vindo! Use as páginas no menu lateral para:
-- **🔄 Robot Curl Converter**: Transforme comandos cURL em scripts Robot prontos
-- **📚 About**: Aprenda a usar a ferramenta
+Welcome! Use side tabs to:
+- **🔄 Robot Curl Converter**: Convert cURL commands into Robot Framework script ready to use
+- **📚 About**: Learn how to use the tool
 """)

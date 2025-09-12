@@ -46,12 +46,25 @@ with st.expander("⚠️ Invalid cURL Formats", expanded=False):
         --form
         """)
 
+with st.expander("📎 Step by Step", expanded=False):
+    st.write("First things first!")
+    st.code("""Ex: curl --location 'https://url'
+    --header 'Content-Type: application/json'
+    --header 'Authorization: Bearer'
+    --data-raw '{
+    "name": "Name",
+    }'""")
+    st.write("1- Go to 'Robot Curl Converter' Page and paste your cURL code into the first field so the application could read the data.")
+    st.write("2- Select the options that match your cURL structure")
+    st.write("3- Click on 'Convert' button.")
+    st.write("4- Voilà, Your code will be displayed at the bottom of the page.")
+
 with st.expander("🔵 Contact", expanded=False):
     st.markdown("""
     <div style='text-align: center;'>
         <h3 style='margin-bottom: 1rem;'>👨‍💻 Juan Santos</h3>
         <p style='color: #666; margin-bottom: 1.5rem;'>
-        Tech Lead QA Automation | Especialista em Robot Framework
+        Tech Lead QA Automation | Robot Framework Specialist
         </p>
     </div>
     """, unsafe_allow_html=True)
@@ -89,7 +102,6 @@ with st.expander("🔵 Contact", expanded=False):
     st.divider()
     
     st.markdown("""
-    **💼 Experiência:** 7 anos na área da tecnologia\n
-    **🛠️ Especialidades:** Robot Framework, Automação Web/API/Desktop/Mobile/SAP \n
-    **🎯 Foco:** Qualidade de Software e Inovação em Testes
+    💼 **7 years of experience**\n
+    🛠️ **Robot Framework, Playwright, Frontend, API REST, Desktop Automation, Mobile Automation, SAP Automation, Python**\n
     """)

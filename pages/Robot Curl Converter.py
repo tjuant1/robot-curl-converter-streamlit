@@ -8,7 +8,6 @@ body_selected = ''
 json_prefixes = ['--data', '--data-raw']
 file_option_list = [main_text_options, 'Yes', 'No']
 
-# Configuração da página (wide mode, título, ícone)
 st.set_page_config(
     page_title="cURL to Robot Framework Converter",
     page_icon="🔄",
@@ -37,11 +36,9 @@ options=file_option_list
 )
 
 if has_body == 'Yes':
-    """Select the body prefix:"""
     body_options = [main_text_options, '--data', '--data-raw', '--form', '--data-urlencode']
     body_selected = st.selectbox(
         label="Select the body prefix",
-        label_visibility="collapsed",
         index=0,
         options=body_options
     )
@@ -55,11 +52,9 @@ if has_body == 'Yes':
         options=file_option_list
         )
 
-"""Select the headers prefix:"""
 headers_options = [main_text_options, '--header']
 header_selected = st.selectbox(
-    label="Select the body prefix",
-    label_visibility='collapsed',
+    label="Select the headers prefix:",
     index=0,
     options=headers_options
 )
@@ -68,7 +63,7 @@ if header_selected != '':
     structure = GetContent()
     headers = structure.get_headers(curl_input, header_selected)
 
-    if headers and st.button("Converter", type="primary", key="convert"):
+    if headers and st.button("Convert", type="primary", key="convert"):
             with st.spinner("Convertendo seu cURL..."):
                 time.sleep(0.5)
 
